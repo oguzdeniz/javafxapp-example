@@ -39,4 +39,19 @@ public class MainWindowController {
       e.printStackTrace();
     }
   }
+
+  @FXML
+  private void handleButton3Action() {
+    try {
+      FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/demo3/Newest.fxml"));
+      Parent root = fxmlLoader.load();
+      Stage newStage = new Stage();
+      newStage.setTitle("Newest");
+      newStage.setScene(new Scene(root, 200, 100));
+      newStage.show();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
 }

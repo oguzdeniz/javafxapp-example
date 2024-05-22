@@ -7,6 +7,7 @@
   <children>
     <Button fx:id="button1" text="Show Message" onAction="#handleButton1Action"/>
     <Label fx:id="messageLabel"/>
-    <Button fx:id="button2" text="Open New Window" onAction="#handleButton2Action"/>
+    <Button fx:id="button2" text="Open New" onAction="#handleButton2Action"/>
+    <Button fx:id="button3" text="Open Newest" onAction="#handleButton3Action"/>
   </children>
 </VBox>
