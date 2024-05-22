@@ -7,7 +7,7 @@
     spacing="10"
     xmlns="http://javafx.com/javafx/17.0.2"
     xmlns:fx="http://javafx.com/fxml/1"
-    fx:controller="com.example.javafxapp.NewWindowController">
+    fx:controller="com.example.javafxapp.controllers.newControllers.NewWindowController">
   <children>
     <Label text="This is the new window"/>
   </children>

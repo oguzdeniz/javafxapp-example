@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox spacing="10" xmlns="http://javafx.com/javafx/17.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafxapp.MainWindowController">
+<VBox spacing="10" xmlns="http://javafx.com/javafx/17.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafxapp.controllers.MainWindowController">
   <children>
     <Button fx:id="button1" text="Show Message" onAction="#handleButton1Action"/>
     <Label fx:id="messageLabel"/>
