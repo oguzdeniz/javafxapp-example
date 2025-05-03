@@ -2,5 +2,6 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="/storage/hddata2/1_PROGRAMMING/1_IDEA/javafxapp-example" vcs="Git" />
   </component>
 </project>

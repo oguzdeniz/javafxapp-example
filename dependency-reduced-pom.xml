@@ -5,6 +5,16 @@
   <artifactId>javafxapp</artifactId>
   <version>0.1</version>
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>**/*.fxml</include>
+          <include>**/*.css</include>
+          <include>**/*.png</include>
+        </includes>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -23,34 +33,50 @@
               <goal>shade</goal>
             </goals>
             <configuration>
+              <shadedArtifactAttached>true</shadedArtifactAttached>
+              <shadedClassifierName>shaded</shadedClassifierName>
               <transformers>
                 <transformer>
                   <mainClass>com.example.javafxapp.MainApp</mainClass>
                 </transformer>
+                <transformer />
               </transformers>
             </configuration>
           </execution>
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.panteleyev</groupId>
-        <artifactId>jpackage-maven-plugin</artifactId>
-        <version>1.6.6</version>
+        <groupId>com.github.wvengen</groupId>
+        <artifactId>proguard-maven-plugin</artifactId>
+        <version>2.7.0</version>
         <executions>
           <execution>
-            <id>create-installer</id>
+            <phase>package</phase>
             <goals>
-              <goal>jpackage</goal>
+              <goal>proguard</goal>
             </goals>
           </execution>
         </executions>
+        <dependencies>
+          <dependency>
+            <groupId>com.guardsquare</groupId>
+            <artifactId>proguard-base</artifactId>
+            <version>7.7.0</version>
+          </dependency>
+        </dependencies>
         <configuration>
-          <inputDirectory>${project.build.directory}</inputDirectory>
-          <destination>${project.build.directory}/installer</destination>
-          <name>JavaFXApp</name>
-          <mainJar>javafxapp-0.1.jar</mainJar>
-          <mainClass>com.example.javafxapp.MainApp</mainClass>
-          <type>APP_IMAGE</type>
+          <proguardVersion>7.7.0</proguardVersion>
+          <injar>${project.build.finalName}-shaded.jar</injar>
+          <outjar>${project.artifactId}-${project.version}-shaded-obfuscated.jar</outjar>
+          <outputDirectory>${project.build.directory}</outputDirectory>
+          <proguardInclude>${project.basedir}/proguard.pro</proguardInclude>
+          <libs>
+            <lib>${java.home}/jmods/java.base.jmod</lib>
+            <lib>${java.home}/jmods/javafx.base.jmod</lib>
+            <lib>${java.home}/jmods/javafx.graphics.jmod</lib>
+            <lib>${java.home}/jmods/javafx.controls.jmod</lib>
+            <lib>${java.home}/jmods/javafx.fxml.jmod</lib>
+          </libs>
         </configuration>
       </plugin>
     </plugins>
@@ -59,5 +85,6 @@
     <maven.compiler.target>21</maven.compiler.target>
     <maven.compiler.source>21</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <openjfx.version>21.0.2</openjfx.version>
   </properties>
 </project>
