@@ -1,0 +1,66 @@
+# This is a ProGuard configuration file.
+
+# Input and output jars are specified in the pom.xml plugin config.
+# Library jars are specified in the pom.xml plugin config.
+
+# Basic ProGuard options
+-dontshrink    # Do not shrink the code
+-dontoptimize  # Do not optimize the code
+#-dontpreverify # We removed this based on previous error
+# -preverify     # We tried this and it didn't work
+
+# Suppress warnings about missing dependencies/classes.
+# Be cautious with this; warnings might indicate real issues.
+-dontwarn
+-ignorewarnings
+
+# Keep application entry point
+# Replace com.example.javafxapp with your actual package if different
+-keep public class com.example.javafxapp.MainApp {
+    public static void main(java.lang.String[]);
+}
+
+# Keep JavaFX Application lifecycle classes and methods
+-keep public class * extends javafx.application.Application {
+    public <init>();
+    public void start(javafx.stage.Stage);
+}
+
+# Keep FXML controllers and their members accessed by FXML (via @FXML annotation)
+
+-keepnames class com.example.javafxapp.controller.* # Keep the class name itself
+
+-keep public class com.example.javafxapp.controller.* {
+    public <init>(); # Keep the public no-arg constructor (needed by FXML)
+    @javafx.fxml.FXML *; # Keep all members (fields/methods) annotated with @FXML
+}
+
+
+# Keep any class members annotated with @FXML across the application
+# This rule might be redundant if the above covers all controllers, but can be a fallback
+-keep class * { @javafx.fxml.FXML *;} # Keep this commented out for now to focus on the above
+
+# Keep all classes that are resource bundles (for localization)
+-keep class * extends java.util.ResourceBundle { *; }
+
+# Keep necessary JavaFX classes and methods potentially used via reflection
+# These rules are broad and might need to be refined if they cause issues or don't keep enough
+#-keepnames class javafx.** { *; } # Keeping these in .pro file is debatable when using <libs>
+#-keepclassmembers class javafx.** { *; } # Keeping these in .pro file is debatable when using <libs>
+
+# Re-added the broad JavaFX keep rules as you had them, just in case, but be aware they prevent internal JavaFX obfuscation
+-keepnames class javafx.** { *; }
+-keepclassmembers class javafx.** { *; }
+
+
+# Keep enums and their members
+-keep enum * { *; }
+-keepclassmembers enum * { *; }
+
+# Keep essential attributes needed by the JVM and reflection
+-keepattributes *Annotation* # Keep all annotations
+-keepattributes Signature    # Keep generic type signatures
+-keepattributes InnerClasses # Keep information about inner classes
+-keepattributes EnclosingMethod # Keep information about enclosing methods (for anonymous classes etc.)
+
+# Add any other specific keep rules needed by your application below this line

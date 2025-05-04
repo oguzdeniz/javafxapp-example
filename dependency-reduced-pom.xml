@@ -69,9 +69,10 @@
           <injar>${project.build.finalName}-shaded.jar</injar>
           <outjar>${project.artifactId}-${project.version}-shaded-obfuscated.jar</outjar>
           <outputDirectory>${project.build.directory}</outputDirectory>
-          <proguardInclude>${project.basedir}/proguard.pro</proguardInclude>
+          <proguardInclude>proguard.pro</proguardInclude>
           <libs>
             <lib>${java.home}/jmods/java.base.jmod</lib>
+            <lib>${java.home}/jmods/java.desktop.jmod</lib>
             <lib>${java.home}/jmods/javafx.base.jmod</lib>
             <lib>${java.home}/jmods/javafx.graphics.jmod</lib>
             <lib>${java.home}/jmods/javafx.controls.jmod</lib>
@@ -85,6 +86,6 @@
     <maven.compiler.target>21</maven.compiler.target>
     <maven.compiler.source>21</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <openjfx.version>21.0.2</openjfx.version>
+    <openjfx.version>21</openjfx.version>
   </properties>
 </project>

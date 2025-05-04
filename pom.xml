@@ -11,7 +11,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
-        <openjfx.version>21.0.2</openjfx.version> </properties>
+        <openjfx.version>21.0.2</openjfx.version>
+        <main.class>com.example.javafxapp.MainApp</main.class>
+        <proguard.config.file>proguard.pro</proguard.config.file> </properties>
 
     <dependencies>
         <dependency>
@@ -31,20 +33,23 @@
             <artifactId>javafx-graphics</artifactId>
             <version>${openjfx.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+            <version>${openjfx.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.guardsquare</groupId>
+            <artifactId>proguard-base</artifactId>
+            <version>7.7.0</version>
+            <scope>runtime</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <includes>
-                    <include>**/*.fxml</include>
-                    <include>**/*.css</include>
-                    <include>**/*.png</include>
-                </includes>
-            </resource>
-        </resources>
-
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -56,65 +61,30 @@
             </plugin>
 
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.5.0</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <shadedArtifactAttached>true</shadedArtifactAttached>
-                            <shadedClassifierName>shaded</shadedClassifierName>
-                            <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.example.javafxapp.MainApp</mainClass>
-                                </transformer>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-                            </transformers>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version> <executions>
+                <execution>
+                    <id>default-cli</id>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>jlink</goal>
+                    </goals>
+                    <configuration>
+                        <mainClass>${main.class}</mainClass>
+                        <bindNonAutomaticModules>true</bindNonAutomaticModules>
+                        <jlinkImageName>${project.artifactId}</jlinkImageName>
+                        <launcher>${project.artifactId}</launcher>
+                        <options>
+                        </options>
+                        <proguard>
+                            <configuration>${proguard.config.file}</configuration>
+                            <skip>false</skip>
+                        </proguard>
 
-            <plugin>
-                <groupId>com.github.wvengen</groupId>
-                <artifactId>proguard-maven-plugin</artifactId>
-                <version>2.7.0</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>proguard</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <proguardVersion>7.7.0</proguardVersion>
-                    <injar>${project.build.finalName}-shaded.jar</injar>
-                    <outjar>${project.artifactId}-${project.version}-shaded-obfuscated.jar</outjar>
-                    <outputDirectory>${project.build.directory}</outputDirectory>
-
-                    <proguardInclude>${project.basedir}/proguard.pro</proguardInclude>
-                    <libs>
-                        <lib>${java.home}/jmods/java.base.jmod</lib>
-                        <lib>${java.home}/jmods/javafx.base.jmod</lib>
-                        <lib>${java.home}/jmods/javafx.graphics.jmod</lib>
-                        <lib>${java.home}/jmods/javafx.controls.jmod</lib>
-                        <lib>${java.home}/jmods/javafx.fxml.jmod</lib>
-                    </libs>
-
-                </configuration>
-
-                <dependencies>
-                    <dependency>
-                        <groupId>com.guardsquare</groupId>
-                        <artifactId>proguard-base</artifactId>
-                        <version>7.7.0</version> </dependency>
-                </dependencies>
-
+                    </configuration>
+                </execution>
+            </executions>
             </plugin>
 
         </plugins>
